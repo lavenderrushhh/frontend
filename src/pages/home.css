@@ -1,0 +1,271 @@
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import {
+  ArrowRight,
+  BriefcaseBusiness,
+  Building2,
+  GraduationCap,
+  ShieldCheck,
+  Sparkles,
+  Users,
+} from "lucide-react";
+import "./home.css";
+
+function Home() {
+  const navigate = useNavigate();
+
+  return (
+    <div className="home">
+      {/* NAVBAR */}
+      <nav className="navbar">
+        <div className="brand">
+          <div className="brand-logo">A</div>
+
+          <div>
+            <h2>
+              Academia<span>Connect</span>
+            </h2>
+            <small>Academia–Industry Collaboration Portal</small>
+          </div>
+        </div>
+
+        <div className="nav-links">
+          <a href="#features">Features</a>
+          <a href="#about">About</a>
+          <a href="#roles">For You</a>
+        </div>
+
+        <button className="login-btn" onClick={() => navigate("/auth")}>
+          Login <ArrowRight size={17} />
+        </button>
+      </nav>
+
+      {/* HERO */}
+      <section className="hero">
+        <div className="hero-content">
+          <div className="badge">
+            <Sparkles size={16} />
+            SIH2604 • Academia–Industry Collaboration
+          </div>
+
+          <h1>
+            Where Talent
+            <br />
+            Meets <span>Opportunity.</span>
+          </h1>
+
+          <p>
+            Connect with industry, discover meaningful opportunities, find
+            mentors and build your professional journey with AcademiaConnect.
+          </p>
+
+          <div className="hero-buttons">
+            <button
+              className="primary-btn"
+              onClick={() => navigate("/auth")}
+            >
+              Get Started <ArrowRight size={18} />
+            </button>
+
+            <button
+              className="secondary-btn"
+              onClick={() => navigate("/auth")}
+            >
+              Explore Platform
+            </button>
+          </div>
+
+          <div className="trust-row">
+            <div>
+              <ShieldCheck size={18} />
+              <span>Verified Skills</span>
+            </div>
+
+            <div>
+              <Users size={18} />
+              <span>Industry Connected</span>
+            </div>
+
+            <div>
+              <BriefcaseBusiness size={18} />
+              <span>Career Focused</span>
+            </div>
+          </div>
+        </div>
+
+        {/* RIGHT SIDE */}
+        <div className="hero-card">
+          <div className="card-glow" />
+
+          <div className="dashboard-card">
+            <div className="mini-header">
+              <span>Student Profile</span>
+              <span className="status">Verified</span>
+            </div>
+
+            <div className="profile-preview">
+              <div className="profile-avatar">A</div>
+
+              <div>
+                <strong>AcademiaConnect Student</strong>
+                <span>Computer Science</span>
+              </div>
+            </div>
+
+            <div className="skill-title">
+              <span>Skill Index</span>
+              <strong>87/100</strong>
+            </div>
+
+            <div className="progress">
+              <div />
+            </div>
+
+            <p>Market Readiness Score</p>
+
+            <div className="skill-list">
+              <span>React</span>
+              <span>Node.js</span>
+              <span>Problem Solving</span>
+              <span>GitHub Verified</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ROLES */}
+      <section className="roles" id="roles">
+        <div className="section-heading">
+          <span>ONE PLATFORM</span>
+          <h2>Built for every side of the ecosystem.</h2>
+          <p>
+            One connected environment for students, institutions and industry.
+          </p>
+        </div>
+
+        <div className="role-grid">
+          <div className="role-card">
+            <div className="role-icon">
+              <GraduationCap />
+            </div>
+
+            <h3>Students</h3>
+
+            <p>
+              Build verified skills, discover internships, projects and
+              career opportunities.
+            </p>
+
+            <button onClick={() => navigate("/auth")}>
+              Student Portal <ArrowRight size={16} />
+            </button>
+          </div>
+
+          <div className="role-card">
+            <div className="role-icon">
+              <Building2 />
+            </div>
+
+            <h3>Industry</h3>
+
+            <p>
+              Discover skill-ready candidates, post opportunities and
+              collaborate on real-world projects.
+            </p>
+
+            <button onClick={() => navigate("/auth")}>
+              Industry Portal <ArrowRight size={16} />
+            </button>
+          </div>
+
+          <div className="role-card">
+            <div className="role-icon">
+              <Users />
+            </div>
+
+            <h3>Institutions</h3>
+
+            <p>
+              Monitor student readiness, identify skill gaps and manage
+              industry collaboration.
+            </p>
+
+            <button onClick={() => navigate("/auth")}>
+              Institution Portal <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+      </section>
+
+      {/* FEATURES */}
+      <section className="features" id="features">
+        <div className="section-heading">
+          <span>POWERFUL FEATURES</span>
+          <h2>From skills to careers.</h2>
+          <p>
+            Everything students need to connect their academic journey with
+            real industry opportunities.
+          </p>
+        </div>
+
+        <div className="feature-grid">
+          <div>
+            <Sparkles />
+            <h3>AI Skill Analytics</h3>
+            <p>
+              Analyze skills and benchmark student readiness against industry
+              expectations.
+            </p>
+          </div>
+
+          <div>
+            <ShieldCheck />
+            <h3>Verified Skill Index</h3>
+            <p>
+              Build evidence-backed profiles using assessments, projects and
+              verified skills.
+            </p>
+          </div>
+
+          <div>
+            <BriefcaseBusiness />
+            <h3>Smart Recruitment</h3>
+            <p>
+              Match students with opportunities based on skills and career
+              interests.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      {/* ABOUT */}
+      <section className="about" id="about">
+        <div className="section-heading">
+          <span>ABOUT ACADEMIACONNECT</span>
+          <h2>Bridging academia and industry.</h2>
+          <p>
+            AcademiaConnect creates a common ecosystem where students,
+            institutions and companies can discover each other, collaborate
+            and create meaningful career outcomes.
+          </p>
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer>
+        <div>
+          <strong>AcademiaConnect</strong>
+          <p>
+            Building a stronger bridge between education and industry.
+          </p>
+        </div>
+
+        <span>
+          SIH2604 • Academia–Industry Collaboration Portal
+        </span>
+      </footer>
+    </div>
+  );
+}
+
+export default Home;
