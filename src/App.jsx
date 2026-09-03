@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { Routes, Route, useNavigate } from "react-router-dom";
 
-
 import Auth from "./pages/Auth.jsx";
 import Home from "./pages/home.jsx";
 
 import "./App.css";
-
 
 /* =========================
    DASHBOARD
@@ -17,12 +15,12 @@ function Dashboard() {
 
   const [activeSection, setActiveSection] = useState("Overview");
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedOpportunity, setSelectedOpportunity] = useState(null);
 
   const savedUser = JSON.parse(
     localStorage.getItem("academiaUser") || "null"
   );
 
-  /* USERNAME */
   const name =
     savedUser?.username ||
     savedUser?.name ||
@@ -30,12 +28,14 @@ function Dashboard() {
 
   const email = savedUser?.email || "";
 
-
   const handleSignOut = () => {
     localStorage.removeItem("academiaUser");
     navigate("/auth");
   };
 
+  /* =========================
+     OPPORTUNITIES DATA
+  ========================= */
 
   const opportunities = [
     {
@@ -43,39 +43,183 @@ function Dashboard() {
       role: "Software Engineering Intern",
       type: "Internship",
       location: "Bangalore / Hybrid",
+      duration: "3 Months",
       stipend: "₹45,000/month",
       skills: ["React", "JavaScript", "DSA"],
       logo: "M",
+      deadline: "30 September 2026",
+      description:
+        "Work with Microsoft's engineering team to build scalable software solutions and contribute to real-world products.",
+      responsibilities: [
+        "Develop and maintain frontend and backend features.",
+        "Write clean, efficient and maintainable code.",
+        "Collaborate with engineers and product teams.",
+        "Participate in code reviews and technical discussions.",
+      ],
+      requirements: [
+        "Currently pursuing a degree in Computer Science or related field.",
+        "Strong programming fundamentals.",
+        "Knowledge of JavaScript and React.",
+        "Understanding of data structures and algorithms.",
+      ],
     },
+
     {
       company: "Deloitte",
       role: "Technology Analyst Intern",
       type: "Internship",
       location: "Hyderabad",
+      duration: "3 Months",
       stipend: "₹35,000/month",
       skills: ["Python", "SQL", "Cloud"],
       logo: "D",
+      deadline: "15 October 2026",
+      description:
+        "Join Deloitte's technology team and work on data, cloud and enterprise technology solutions.",
+      responsibilities: [
+        "Assist in developing technology solutions.",
+        "Work with databases and SQL queries.",
+        "Support cloud-based applications.",
+        "Collaborate with analysts and developers.",
+      ],
+      requirements: [
+        "Knowledge of Python.",
+        "Working knowledge of SQL.",
+        "Basic understanding of cloud computing.",
+        "Good analytical and communication skills.",
+      ],
     },
+
     {
       company: "TCS Research",
       role: "AI Research Project",
       type: "Live Project",
       location: "Remote",
+      duration: "8 Weeks",
       stipend: "Certificate + PPO",
       skills: ["Python", "Machine Learning", "NLP"],
       logo: "T",
+      deadline: "25 September 2026",
+      description:
+        "Work on an industry-oriented AI research project involving machine learning and natural language processing.",
+      responsibilities: [
+        "Research machine learning techniques.",
+        "Build and evaluate NLP models.",
+        "Analyse datasets and experiment with algorithms.",
+        "Prepare technical documentation and reports.",
+      ],
+      requirements: [
+        "Strong Python fundamentals.",
+        "Basic knowledge of Machine Learning.",
+        "Understanding of NLP concepts.",
+        "Interest in research and experimentation.",
+      ],
     },
+
     {
       company: "Google",
       role: "Software Engineering Intern",
       type: "Internship",
       location: "Bangalore",
+      duration: "3 Months",
       stipend: "₹60,000/month",
       skills: ["C++", "DSA", "System Design"],
       logo: "G",
+      deadline: "10 October 2026",
+      description:
+        "Gain hands-on experience working with software engineers on challenging technical problems.",
+      responsibilities: [
+        "Design and implement software components.",
+        "Solve complex engineering problems.",
+        "Work with large-scale systems.",
+        "Collaborate with engineering teams.",
+      ],
+      requirements: [
+        "Strong programming skills.",
+        "Excellent understanding of DSA.",
+        "Knowledge of C++ or equivalent programming language.",
+        "Strong problem-solving ability.",
+      ],
+    },
+
+    {
+      company: "DataSphere Analytics",
+      role: "Data Science Intern",
+      type: "Internship",
+      location: "Remote",
+      duration: "6 Months",
+      stipend: "₹20,000/month",
+      skills: ["Python", "Pandas", "Machine Learning"],
+      logo: "D",
+      deadline: "5 November 2026",
+      description:
+        "Work with real-world datasets and develop data-driven solutions using Python and machine learning.",
+      responsibilities: [
+        "Clean and preprocess datasets.",
+        "Perform exploratory data analysis.",
+        "Build machine learning models.",
+        "Create reports and communicate insights.",
+      ],
+      requirements: [
+        "Python programming.",
+        "Knowledge of Pandas and NumPy.",
+        "Basic understanding of machine learning.",
+        "Analytical mindset.",
+      ],
+    },
+
+    {
+      company: "EduTech Innovations",
+      role: "Smart Campus Management System",
+      type: "Live Project",
+      location: "Hybrid",
+      duration: "10 Weeks",
+      stipend: "Certificate",
+      skills: ["React", "Node.js", "MongoDB"],
+      logo: "E",
+      deadline: "20 October 2026",
+      description:
+        "Build a smart campus management platform connecting students, faculty and administrators.",
+      responsibilities: [
+        "Develop responsive web interfaces.",
+        "Build REST APIs.",
+        "Design and manage database collections.",
+        "Work with a team to deliver project milestones.",
+      ],
+      requirements: [
+        "React fundamentals.",
+        "Basic Node.js knowledge.",
+        "MongoDB fundamentals.",
+        "Ability to work in a team.",
+      ],
+    },
+
+    {
+      company: "PixelWorks Studio",
+      role: "UI/UX Designer",
+      type: "Job",
+      location: "Kolkata",
+      duration: "Full Time",
+      stipend: "₹4–6 LPA",
+      skills: ["Figma", "UI Design", "UX Research"],
+      logo: "P",
+      deadline: "30 October 2026",
+      description:
+        "Join a creative product team and design intuitive digital experiences for web and mobile applications.",
+      responsibilities: [
+        "Create wireframes and prototypes.",
+        "Design modern user interfaces.",
+        "Conduct UX research.",
+        "Collaborate with developers and product managers.",
+      ],
+      requirements: [
+        "Strong knowledge of Figma.",
+        "Understanding of UI/UX principles.",
+        "Good visual design skills.",
+        "Portfolio demonstrating design work.",
+      ],
     },
   ];
-
 
   const filteredOpportunities = opportunities.filter((item) => {
     const search = searchTerm.toLowerCase();
@@ -83,12 +227,380 @@ function Dashboard() {
     return (
       item.company.toLowerCase().includes(search) ||
       item.role.toLowerCase().includes(search) ||
+      item.type.toLowerCase().includes(search) ||
+      item.location.toLowerCase().includes(search) ||
       item.skills.some((skill) =>
         skill.toLowerCase().includes(search)
       )
     );
   });
 
+  /* =========================
+     VIEW OPPORTUNITY
+  ========================= */
+
+  const handleViewOpportunity = (item) => {
+    setSelectedOpportunity(item);
+  };
+
+  const handleBackToOpportunities = () => {
+    setSelectedOpportunity(null);
+  };
+
+  /* =========================
+     OPPORTUNITY DETAILS
+  ========================= */
+
+  if (selectedOpportunity) {
+    return (
+      <div className="dashboard-page">
+
+        <aside className="sidebar">
+
+          <div className="sidebar-brand">
+            <div className="brand-mark">
+              A
+            </div>
+
+            <div className="brand-text">
+              <strong>AcademiaConnect</strong>
+              <span>Student Portal</span>
+            </div>
+          </div>
+
+          <nav className="sidebar-nav">
+
+            <button
+              className="nav-item"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("Overview");
+              }}
+            >
+              <span>⌂</span>
+              Overview
+            </button>
+
+            <button
+              className="nav-item active"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("Opportunities");
+              }}
+            >
+              <span>◈</span>
+              Opportunities
+            </button>
+
+            <button
+              className="nav-item"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("Applications");
+              }}
+            >
+              <span>▣</span>
+              Applications
+            </button>
+
+            <button
+              className="nav-item"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("Projects");
+              }}
+            >
+              <span>◇</span>
+              Projects
+            </button>
+
+            <button
+              className="nav-item"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("Mentorship");
+              }}
+            >
+              <span>♧</span>
+              Mentorship
+            </button>
+
+            <button
+              className="nav-item"
+              onClick={() => {
+                setSelectedOpportunity(null);
+                setActiveSection("My Profile");
+              }}
+            >
+              <span>◎</span>
+              My Profile
+            </button>
+
+          </nav>
+
+          <div className="sidebar-bottom">
+
+            <div className="sidebar-user">
+
+              <div className="mini-avatar">
+                {name.charAt(0).toUpperCase()}
+              </div>
+
+              <div className="sidebar-user-info">
+                <strong>{name}</strong>
+                <span>Student</span>
+              </div>
+
+            </div>
+
+            <button
+              className="signout-button"
+              onClick={handleSignOut}
+            >
+              <span>↪</span>
+              Sign out
+            </button>
+
+          </div>
+
+        </aside>
+
+        <main className="dashboard-main">
+
+          <header className="dashboard-topbar">
+
+            <div className="topbar-search">
+              <span>⌕</span>
+
+              <input
+                type="text"
+                placeholder="Search AcademiaConnect..."
+                value={searchTerm}
+                onChange={(e) =>
+                  setSearchTerm(e.target.value)
+                }
+              />
+            </div>
+
+            <div className="topbar-actions">
+
+              <button className="notification-button">
+                🔔
+              </button>
+
+              <div className="topbar-profile">
+
+                <div className="mini-avatar">
+                  {name.charAt(0).toUpperCase()}
+                </div>
+
+                <div>
+                  <strong>{name}</strong>
+                  <span>Student</span>
+                </div>
+
+              </div>
+
+            </div>
+
+          </header>
+
+          <div className="dashboard-content">
+
+            <button
+              className="text-button"
+              onClick={handleBackToOpportunities}
+              style={{
+                marginBottom: "25px",
+                fontSize: "15px",
+              }}
+            >
+              ← Back to opportunities
+            </button>
+
+            <div className="dashboard-heading">
+
+              <p className="eyebrow">
+                {selectedOpportunity.type.toUpperCase()}
+              </p>
+
+              <h1>
+                {selectedOpportunity.role}
+              </h1>
+
+              <p>
+                {selectedOpportunity.company}
+              </p>
+
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns:
+                  "minmax(0, 2fr) minmax(280px, 1fr)",
+                gap: "25px",
+                marginTop: "30px",
+              }}
+            >
+
+              <div>
+
+                <div className="profile-detail-card">
+
+                  <h3>About the opportunity</h3>
+
+                  <p
+                    style={{
+                      lineHeight: "1.7",
+                      marginTop: "12px",
+                    }}
+                  >
+                    {selectedOpportunity.description}
+                  </p>
+
+                </div>
+
+                <div
+                  className="profile-detail-card"
+                  style={{ marginTop: "20px" }}
+                >
+
+                  <h3>Responsibilities</h3>
+
+                  <ul
+                    style={{
+                      lineHeight: "1.8",
+                      paddingLeft: "22px",
+                    }}
+                  >
+                    {selectedOpportunity.responsibilities.map(
+                      (item, index) => (
+                        <li key={index}>{item}</li>
+                      )
+                    )}
+                  </ul>
+
+                </div>
+
+                <div
+                  className="profile-detail-card"
+                  style={{ marginTop: "20px" }}
+                >
+
+                  <h3>Requirements</h3>
+
+                  <ul
+                    style={{
+                      lineHeight: "1.8",
+                      paddingLeft: "22px",
+                    }}
+                  >
+                    {selectedOpportunity.requirements.map(
+                      (item, index) => (
+                        <li key={index}>{item}</li>
+                      )
+                    )}
+                  </ul>
+
+                </div>
+
+                <div
+                  className="profile-detail-card"
+                  style={{ marginTop: "20px" }}
+                >
+
+                  <h3>Required skills</h3>
+
+                  <div className="skill-list">
+
+                    {selectedOpportunity.skills.map(
+                      (skill) => (
+                        <span key={skill}>
+                          {skill}
+                        </span>
+                      )
+                    )}
+
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div>
+
+                <div className="profile-detail-card">
+
+                  <div
+                    style={{
+                      width: "70px",
+                      height: "70px",
+                      borderRadius: "18px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      fontSize: "30px",
+                      fontWeight: "700",
+                      background:
+                        "rgba(255,255,255,0.08)",
+                      marginBottom: "18px",
+                    }}
+                  >
+                    {selectedOpportunity.logo}
+                  </div>
+
+                  <h3>
+                    {selectedOpportunity.company}
+                  </h3>
+
+                  <p>
+                    📍 {selectedOpportunity.location}
+                  </p>
+
+                  <p>
+                    ⏱ {selectedOpportunity.duration}
+                  </p>
+
+                  <p>
+                    💰 {selectedOpportunity.stipend}
+                  </p>
+
+                  <p>
+                    📅 Deadline:{" "}
+                    {selectedOpportunity.deadline}
+                  </p>
+
+                  <button
+                    className="apply-button"
+                    style={{
+                      width: "100%",
+                      marginTop: "15px",
+                    }}
+                    onClick={() =>
+                      handleApply(selectedOpportunity)
+                    }
+                  >
+                    Apply for this position
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </main>
+
+      </div>
+    );
+  }
+
+  /* =========================
+     MAIN DASHBOARD
+  ========================= */
 
   return (
     <div className="dashboard-page">
@@ -110,7 +622,6 @@ function Dashboard() {
 
         </div>
 
-
         <nav className="sidebar-nav">
 
           <button
@@ -125,7 +636,6 @@ function Dashboard() {
             Overview
           </button>
 
-
           <button
             className={
               activeSection === "Opportunities"
@@ -137,7 +647,6 @@ function Dashboard() {
             <span>◈</span>
             Opportunities
           </button>
-
 
           <button
             className={
@@ -151,7 +660,6 @@ function Dashboard() {
             Applications
           </button>
 
-
           <button
             className={
               activeSection === "Projects"
@@ -164,7 +672,6 @@ function Dashboard() {
             Projects
           </button>
 
-
           <button
             className={
               activeSection === "Mentorship"
@@ -176,7 +683,6 @@ function Dashboard() {
             <span>♧</span>
             Mentorship
           </button>
-
 
           <button
             className={
@@ -191,7 +697,6 @@ function Dashboard() {
           </button>
 
         </nav>
-
 
         <div className="sidebar-bottom">
 
@@ -208,7 +713,6 @@ function Dashboard() {
 
           </div>
 
-
           <button
             className="signout-button"
             onClick={handleSignOut}
@@ -220,7 +724,6 @@ function Dashboard() {
         </div>
 
       </aside>
-
 
       {/* MAIN */}
 
@@ -245,13 +748,11 @@ function Dashboard() {
 
           </div>
 
-
           <div className="topbar-actions">
 
             <button className="notification-button">
               🔔
             </button>
-
 
             <div className="topbar-profile">
 
@@ -269,7 +770,6 @@ function Dashboard() {
           </div>
 
         </header>
-
 
         {/* CONTENT */}
 
@@ -301,7 +801,6 @@ function Dashboard() {
 
               </div>
 
-
               {/* STATS */}
 
               <div className="stats-grid">
@@ -319,7 +818,6 @@ function Dashboard() {
 
                 </div>
 
-
                 <div className="stat-card">
 
                   <div className="stat-icon">
@@ -333,7 +831,6 @@ function Dashboard() {
 
                 </div>
 
-
                 <div className="stat-card">
 
                   <div className="stat-icon">
@@ -346,7 +843,6 @@ function Dashboard() {
                   </div>
 
                 </div>
-
 
                 <div className="stat-card">
 
@@ -362,7 +858,6 @@ function Dashboard() {
                 </div>
 
               </div>
-
 
               {/* RECOMMENDED */}
 
@@ -382,7 +877,6 @@ function Dashboard() {
 
                   </div>
 
-
                   <button
                     className="text-button"
                     onClick={() =>
@@ -394,7 +888,6 @@ function Dashboard() {
 
                 </div>
 
-
                 <div className="opportunity-grid">
 
                   {opportunities
@@ -403,13 +896,13 @@ function Dashboard() {
                       <OpportunityCard
                         key={item.company}
                         item={item}
+                        onView={handleViewOpportunity}
                       />
                     ))}
 
                 </div>
 
               </section>
-
 
               {/* ACTIVITY */}
 
@@ -430,7 +923,6 @@ function Dashboard() {
                   </div>
 
                 </div>
-
 
                 <div className="activity-card">
 
@@ -457,7 +949,6 @@ function Dashboard() {
 
                   </div>
 
-
                   <div className="activity-item">
 
                     <div className="activity-dot" />
@@ -480,7 +971,6 @@ function Dashboard() {
                     </span>
 
                   </div>
-
 
                   <div className="activity-item">
 
@@ -512,7 +1002,6 @@ function Dashboard() {
             </>
           )}
 
-
           {/* ================= OPPORTUNITIES ================= */}
 
           {activeSection === "Opportunities" && (
@@ -535,7 +1024,6 @@ function Dashboard() {
 
               </div>
 
-
               <div className="opportunity-toolbar">
 
                 <div className="large-search">
@@ -556,21 +1044,35 @@ function Dashboard() {
 
               </div>
 
-
               <div className="opportunity-grid">
 
                 {filteredOpportunities.map((item) => (
                   <OpportunityCard
-                    key={item.company}
+                    key={`${item.company}-${item.role}`}
                     item={item}
+                    onView={handleViewOpportunity}
                   />
                 ))}
 
               </div>
 
+              {filteredOpportunities.length === 0 && (
+                <div
+                  className="application-card"
+                  style={{ marginTop: "25px" }}
+                >
+                  <div className="application-info">
+                    <h3>No opportunities found</h3>
+                    <p>
+                      Try searching for a different company,
+                      role or skill.
+                    </p>
+                  </div>
+                </div>
+              )}
+
             </>
           )}
-
 
           {/* ================= APPLICATIONS ================= */}
 
@@ -593,12 +1095,14 @@ function Dashboard() {
 
               </div>
 
-
               <div className="application-list">
 
                 {(() => {
+
                   const savedApplications = JSON.parse(
-                    localStorage.getItem("academiaApplications") || "[]"
+                    localStorage.getItem(
+                      "academiaApplications"
+                    ) || "[]"
                   );
 
                   if (savedApplications.length === 0) {
@@ -610,6 +1114,7 @@ function Dashboard() {
                         </div>
 
                         <div className="application-info">
+
                           <h3>
                             No applications yet
                           </h3>
@@ -618,6 +1123,7 @@ function Dashboard() {
                             Apply to an opportunity and it
                             will appear here.
                           </p>
+
                         </div>
 
                       </div>
@@ -678,13 +1184,13 @@ function Dashboard() {
                       );
                     }
                   );
+
                 })()}
 
               </div>
 
             </>
           )}
-
 
           {/* ================= PROJECTS ================= */}
 
@@ -707,7 +1213,6 @@ function Dashboard() {
                 </p>
 
               </div>
-
 
               <div className="project-grid">
 
@@ -742,7 +1247,6 @@ function Dashboard() {
                   </button>
 
                 </div>
-
 
                 <div className="project-card">
 
@@ -781,7 +1285,6 @@ function Dashboard() {
             </>
           )}
 
-
           {/* ================= MENTORSHIP ================= */}
 
           {activeSection === "Mentorship" && (
@@ -804,7 +1307,6 @@ function Dashboard() {
 
               </div>
 
-
               <div className="mentor-grid">
 
                 <Mentor
@@ -813,7 +1315,6 @@ function Dashboard() {
                   role="Senior Software Engineer"
                   skills="React · System Design · Career"
                 />
-
 
                 <Mentor
                   initials="RK"
@@ -826,7 +1327,6 @@ function Dashboard() {
 
             </>
           )}
-
 
           {/* ================= PROFILE ================= */}
 
@@ -849,7 +1349,6 @@ function Dashboard() {
 
               </div>
 
-
               <div className="profile-container">
 
                 <div className="profile-main-card">
@@ -871,7 +1370,6 @@ function Dashboard() {
                   </span>
 
                 </div>
-
 
                 <div className="profile-details">
 
@@ -911,7 +1409,6 @@ function Dashboard() {
 
                   </div>
 
-
                   <div className="profile-detail-card">
 
                     <h3>
@@ -945,53 +1442,60 @@ function Dashboard() {
 
 
 /* =========================
+   APPLY FUNCTION
+========================= */
+
+function handleApply(item) {
+
+  const savedApplications = JSON.parse(
+    localStorage.getItem("academiaApplications") || "[]"
+  );
+
+  const alreadyApplied = savedApplications.some(
+    (application) =>
+      application.company === item.company &&
+      application.role === item.role
+  );
+
+  if (alreadyApplied) {
+    alert(
+      "You have already applied for this opportunity."
+    );
+    return;
+  }
+
+  const newApplication = {
+    id: Date.now(),
+    company: item.company,
+    role: item.role,
+    type: item.type,
+    location: item.location,
+    duration: item.duration,
+    stipend: item.stipend,
+    skills: item.skills,
+    status: "Under Review",
+    appliedAt: new Date().toLocaleDateString(),
+  };
+
+  localStorage.setItem(
+    "academiaApplications",
+    JSON.stringify([
+      ...savedApplications,
+      newApplication,
+    ])
+  );
+
+  alert(
+    `Application submitted for ${item.role}!`
+  );
+}
+
+
+/* =========================
    OPPORTUNITY CARD
 ========================= */
 
-function OpportunityCard({ item }) {
-
-  const handleApply = () => {
-
-    const savedApplications = JSON.parse(
-      localStorage.getItem("academiaApplications") || "[]"
-    );
-
-    const alreadyApplied = savedApplications.some(
-      (application) =>
-        application.company === item.company &&
-        application.role === item.role
-    );
-
-    if (alreadyApplied) {
-      alert(
-        "You have already applied for this opportunity."
-      );
-      return;
-    }
-
-    const newApplication = {
-      company: item.company,
-      role: item.role,
-      type: item.type,
-      location: item.location,
-      stipend: item.stipend,
-      skills: item.skills,
-      status: "Under Review",
-      appliedAt: new Date().toLocaleDateString(),
-    };
-
-    localStorage.setItem(
-      "academiaApplications",
-      JSON.stringify([
-        ...savedApplications,
-        newApplication,
-      ])
-    );
-
-    alert(
-      `Application submitted for ${item.role}!`
-    );
-  };
+function OpportunityCard({ item, onView }) {
 
   return (
     <div className="opportunity-card">
@@ -1008,16 +1512,13 @@ function OpportunityCard({ item }) {
 
       </div>
 
-
       <h3>
         {item.role}
       </h3>
 
-
       <p className="company-name">
         {item.company}
       </p>
-
 
       <div className="opportunity-meta">
 
@@ -1031,7 +1532,6 @@ function OpportunityCard({ item }) {
 
       </div>
 
-
       <div className="skill-list">
 
         {item.skills.map((skill) => (
@@ -1042,13 +1542,38 @@ function OpportunityCard({ item }) {
 
       </div>
 
-
-      <button
-        className="apply-button"
-        onClick={handleApply}
+      <div
+        style={{
+          display: "flex",
+          gap: "10px",
+          marginTop: "18px",
+        }}
       >
-        Apply now
-      </button>
+
+        <button
+          className="text-button"
+          onClick={() => onView(item)}
+          style={{
+            flex: 1,
+            border: "1px solid rgba(255,255,255,0.15)",
+            borderRadius: "10px",
+            padding: "11px 12px",
+          }}
+        >
+          View Opportunity
+        </button>
+
+        <button
+          className="apply-button"
+          onClick={() => handleApply(item)}
+          style={{
+            flex: 1,
+          }}
+        >
+          Apply now
+        </button>
+
+      </div>
 
     </div>
   );
@@ -1066,6 +1591,7 @@ function Application({
   status,
   statusClass,
 }) {
+
   return (
     <div className="application-card">
 
@@ -1106,6 +1632,7 @@ function Mentor({
   role,
   skills,
 }) {
+
   return (
     <div className="mentor-card">
 
@@ -1145,6 +1672,7 @@ function Mentor({
 ========================= */
 
 function App() {
+
   return (
     <Routes>
 
@@ -1166,6 +1694,5 @@ function App() {
     </Routes>
   );
 }
-
 
 export default App;
