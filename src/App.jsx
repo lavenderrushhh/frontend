@@ -16,6 +16,7 @@ function Dashboard() {
   const [activeSection, setActiveSection] = useState("Overview");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedOpportunity, setSelectedOpportunity] = useState(null);
+  const [selectedProject, setSelectedProject] = useState(null);
 
   const savedUser = JSON.parse(
     localStorage.getItem("academiaUser") || "null"
@@ -476,7 +477,9 @@ function Dashboard() {
                   >
                     {selectedOpportunity.responsibilities.map(
                       (item, index) => (
-                        <li key={index}>{item}</li>
+                        <li key={index}>
+                          {item}
+                        </li>
                       )
                     )}
                   </ul>
@@ -498,7 +501,9 @@ function Dashboard() {
                   >
                     {selectedOpportunity.requirements.map(
                       (item, index) => (
-                        <li key={index}>{item}</li>
+                        <li key={index}>
+                          {item}
+                        </li>
                       )
                     )}
                   </ul>
@@ -666,7 +671,10 @@ function Dashboard() {
                 ? "nav-item active"
                 : "nav-item"
             }
-            onClick={() => setActiveSection("Projects")}
+            onClick={() => {
+              setSelectedProject(null);
+              setActiveSection("Projects");
+            }}
           >
             <span>◇</span>
             Projects
@@ -1061,13 +1069,20 @@ function Dashboard() {
                   className="application-card"
                   style={{ marginTop: "25px" }}
                 >
+
                   <div className="application-info">
-                    <h3>No opportunities found</h3>
+
+                    <h3>
+                      No opportunities found
+                    </h3>
+
                     <p>
                       Try searching for a different company,
                       role or skill.
                     </p>
+
                   </div>
+
                 </div>
               )}
 
@@ -1196,92 +1211,231 @@ function Dashboard() {
 
           {activeSection === "Projects" && (
             <>
+              {!selectedProject ? (
+                <>
 
-              <div className="dashboard-heading">
+                  <div className="dashboard-heading">
 
-                <p className="eyebrow">
-                  PROJECTS
-                </p>
+                    <p className="eyebrow">
+                      PROJECTS
+                    </p>
 
-                <h1>
-                  Industry projects
-                </h1>
+                    <h1>
+                      Industry projects
+                    </h1>
 
-                <p>
-                  Build real-world experience with
-                  industry partners.
-                </p>
+                    <p>
+                      Build real-world experience with
+                      industry partners.
+                    </p>
 
-              </div>
-
-              <div className="project-grid">
-
-                <div className="project-card">
-
-                  <span className="project-label">
-                    ACTIVE
-                  </span>
-
-                  <h3>
-                    Intelligent Document Processing
-                  </h3>
-
-                  <p>
-                    Build an AI-powered document
-                    processing pipeline using NLP and
-                    machine learning.
-                  </p>
-
-                  <div className="project-info">
-                    AI / ML · 8 weeks
                   </div>
 
-                  <button
-                    onClick={() =>
-                      alert(
-                        "Project details coming soon!"
-                      )
-                    }
-                  >
-                    View project
-                  </button>
+                  <div className="project-grid">
 
-                </div>
+                    <div className="project-card">
 
-                <div className="project-card">
+                      <span className="project-label">
+                        ACTIVE
+                      </span>
 
-                  <span className="project-label">
-                    OPEN
-                  </span>
+                      <h3>
+                        Intelligent Document Processing
+                      </h3>
 
-                  <h3>
-                    Campus Recruitment Platform
-                  </h3>
+                      <p>
+                        Build an AI-powered document
+                        processing pipeline using NLP and
+                        machine learning.
+                      </p>
 
-                  <p>
-                    Design and develop a scalable
-                    recruitment platform with an
-                    industry team.
-                  </p>
+                      <div className="project-info">
+                        AI / ML · 8 weeks
+                      </div>
 
-                  <div className="project-info">
-                    Web Development · 12 weeks
+                      <button
+                        onClick={() =>
+                          setSelectedProject({
+                            title:
+                              "Intelligent Document Processing",
+                            status: "ACTIVE",
+                            category: "AI / ML",
+                            duration: "8 weeks",
+                            description:
+                              "Build an AI-powered document processing pipeline using NLP and machine learning.",
+                            skills: [
+                              "Python",
+                              "Machine Learning",
+                              "NLP",
+                            ],
+                            responsibilities: [
+                              "Design and develop document processing pipelines.",
+                              "Apply NLP and machine learning techniques.",
+                              "Process and analyse real-world datasets.",
+                              "Build and evaluate intelligent models.",
+                            ],
+                          })
+                        }
+                      >
+                        View project
+                      </button>
+
+                    </div>
+
+                    <div className="project-card">
+
+                      <span className="project-label">
+                        OPEN
+                      </span>
+
+                      <h3>
+                        Campus Recruitment Platform
+                      </h3>
+
+                      <p>
+                        Design and develop a scalable
+                        recruitment platform with an
+                        industry team.
+                      </p>
+
+                      <div className="project-info">
+                        Web Development · 12 weeks
+                      </div>
+
+                      <button
+                        onClick={() =>
+                          setSelectedProject({
+                            title:
+                              "Campus Recruitment Platform",
+                            status: "OPEN",
+                            category: "Web Development",
+                            duration: "12 weeks",
+                            description:
+                              "Design and develop a scalable recruitment platform with an industry team.",
+                            skills: [
+                              "React",
+                              "Node.js",
+                              "MongoDB",
+                            ],
+                            responsibilities: [
+                              "Develop responsive web interfaces.",
+                              "Build REST APIs.",
+                              "Design and manage database collections.",
+                              "Work with a team to deliver project milestones.",
+                            ],
+                          })
+                        }
+                      >
+                        View project
+                      </button>
+
+                    </div>
+
                   </div>
 
+                </>
+              ) : (
+                <>
+
                   <button
-                    onClick={() =>
-                      alert(
-                        "Project details coming soon!"
-                      )
-                    }
+                    className="text-button"
+                    onClick={() => setSelectedProject(null)}
+                    style={{
+                      marginBottom: "25px",
+                      fontSize: "15px",
+                    }}
                   >
-                    View project
+                    ← Back to projects
                   </button>
 
-                </div>
+                  <div className="dashboard-heading">
 
-              </div>
+                    <p className="eyebrow">
+                      {selectedProject.status}
+                    </p>
 
+                    <h1>
+                      {selectedProject.title}
+                    </h1>
+
+                    <p>
+                      {selectedProject.category} ·{" "}
+                      {selectedProject.duration}
+                    </p>
+
+                  </div>
+
+                  <div
+                    className="profile-detail-card"
+                    style={{ marginTop: "30px" }}
+                  >
+
+                    <h3>
+                      About the project
+                    </h3>
+
+                    <p
+                      style={{
+                        lineHeight: "1.7",
+                        marginTop: "12px",
+                      }}
+                    >
+                      {selectedProject.description}
+                    </p>
+
+                  </div>
+
+                  <div
+                    className="profile-detail-card"
+                    style={{ marginTop: "20px" }}
+                  >
+
+                    <h3>
+                      Responsibilities
+                    </h3>
+
+                    <ul
+                      style={{
+                        lineHeight: "1.8",
+                        paddingLeft: "22px",
+                      }}
+                    >
+                      {selectedProject.responsibilities.map(
+                        (item, index) => (
+                          <li key={index}>
+                            {item}
+                          </li>
+                        )
+                      )}
+                    </ul>
+
+                  </div>
+
+                  <div
+                    className="profile-detail-card"
+                    style={{ marginTop: "20px" }}
+                  >
+
+                    <h3>
+                      Required skills
+                    </h3>
+
+                    <div className="skill-list">
+
+                      {selectedProject.skills.map(
+                        (skill) => (
+                          <span key={skill}>
+                            {skill}
+                          </span>
+                        )
+                      )}
+
+                    </div>
+
+                  </div>
+
+                </>
+              )}
             </>
           )}
 
@@ -1440,7 +1594,6 @@ function Dashboard() {
   );
 }
 
-
 /* =========================
    APPLY FUNCTION
 ========================= */
@@ -1489,7 +1642,6 @@ function handleApply(item) {
     `Application submitted for ${item.role}!`
   );
 }
-
 
 /* =========================
    OPPORTUNITY CARD
@@ -1579,7 +1731,6 @@ function OpportunityCard({ item, onView }) {
   );
 }
 
-
 /* =========================
    APPLICATION
 ========================= */
@@ -1620,7 +1771,6 @@ function Application({
     </div>
   );
 }
-
 
 /* =========================
    MENTOR
@@ -1665,7 +1815,6 @@ function Mentor({
     </div>
   );
 }
-
 
 /* =========================
    APP ROUTES

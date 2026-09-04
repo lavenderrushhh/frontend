@@ -13,6 +13,8 @@ export default function Auth() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
+
   const switchMode = () => {
     setIsLogin((prev) => !prev);
 
@@ -23,7 +25,7 @@ export default function Auth() {
     setConfirmPassword("");
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
     if (isLogin) {
@@ -32,33 +34,45 @@ export default function Auth() {
         return;
       }
 
-      const savedUser = JSON.parse(
-        localStorage.getItem("academiaUser") || "null"
-      );
+      try {
+        setLoading(true);
 
-      let userName = email.split("@")[0];
-      let userUsername = "";
+        const response = await fetch(
+          "api/auth/login",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: email.trim(),
+              password,
+            }),
+          }
+        );
 
-      if (
-        savedUser &&
-        savedUser.email &&
-        savedUser.email.toLowerCase() === email.toLowerCase()
-      ) {
-        userName = savedUser.name || userName;
-        userUsername = savedUser.username || "";
+        const data = await response.json();
+
+        if (!response.ok) {
+          alert(data.message || "Invalid email or password.");
+          return;
+        }
+
+        localStorage.setItem(
+          "academiaUser",
+          JSON.stringify(data.user)
+        );
+
+        navigate("/dashboard");
+      } catch (error) {
+        console.error(error);
+        alert(
+          "Unable to connect to the server. Please make sure the backend is running."
+        );
+      } finally {
+        setLoading(false);
       }
 
-      localStorage.setItem(
-        "academiaUser",
-        JSON.stringify({
-          name: userName,
-          username: userUsername,
-          email: email.trim(),
-          password: savedUser?.password || password,
-        })
-      );
-
-      navigate("/dashboard");
       return;
     }
 
@@ -83,21 +97,49 @@ export default function Auth() {
       return;
     }
 
-    const user = {
-      name: name.trim(),
-      username: username.trim(),
-      email: email.trim(),
-      password: password,
-    };
+    try {
+      setLoading(true);
 
-    localStorage.setItem(
-      "academiaUser",
-      JSON.stringify(user)
-    );
+      const response = await fetch(
+        "api/auth/register",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: name.trim(),
+            username: username.trim(),
+            email: email.trim(),
+            password,
+            role: "student",
+          }),
+        }
+      );
 
-    alert("Account created successfully!");
+      const data = await response.json();
 
-    navigate("/dashboard");
+      if (!response.ok) {
+        alert(data.message || "Registration failed.");
+        return;
+      }
+
+      localStorage.setItem(
+        "academiaUser",
+        JSON.stringify(data.user)
+      );
+
+      alert("Account created successfully!");
+
+      navigate("/dashboard");
+    } catch (error) {
+      console.error(error);
+      alert(
+        "Unable to connect to the server. Please make sure the backend is running."
+      );
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -211,7 +253,6 @@ export default function Auth() {
               </div>
             )}
 
-            {/* USERNAME BOX */}
             {!isLogin && (
               <div className="field">
                 <label>
@@ -299,9 +340,12 @@ export default function Auth() {
             <button
               type="submit"
               className="auth-submit"
+              disabled={loading}
             >
               <span>
-                {isLogin
+                {loading
+                  ? "Please wait..."
+                  : isLogin
                   ? "Sign in"
                   : "Create account"}
               </span>
